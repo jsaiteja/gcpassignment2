@@ -1,0 +1,24 @@
+1. Go to Compute Engine VM instance in the gcp console
+
+2. Create an instance. Specify the name, region as us-east1
+
+3. In order to create an instance with only private ip, go to network,Vpc part and keep the external ip as none
+
+4. Also create another instance which has both private and external ip.
+
+5. Ensure that the both instances are present in the same vpc.
+
+6. Give network tag to the instance, Create Cloud NAT in that vpc to access internet.
+
+7. SSH the instance with external ip
+
+8. Execute  ssh private-instance-name to launch the private instance 
+
+   For eg. sai-gcp-3 is my gce vm instance with only private ip
+           gcp2-sai-q1 is my instance having external ip also
+  launch gcp2-sai-q1 using SSH and execute the command ssh sai-gcp-3 to launch private instance. Before that, Cloud NAT has created.
+
+9. Check whether the private ip instance is able to access internet by some commands like curl example.com
+
+   
+     

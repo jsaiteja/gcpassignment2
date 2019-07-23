@@ -1,0 +1,31 @@
+
+1. Create a new cloud function, specify the name.
+
+2. Select Cloud Storage in the trigger.Enter the bucket name in which the file will be uploaded to detect objects.
+   Set language to Python 3.7
+
+3. The following code is used to detect objects in the images.
+
+from google.cloud import vision
+
+vision_client = vision.ImageAnnotatorClient()
+def detect_objects(file, context):
+   bucket = file['bucket']
+   filename = file['name']
+   print('Looking for objects in image {}'.format(filename))
+   try:
+       objects = vision_client.object_localization({
+           'source': {'image_uri': 'gs://{}/{}'.format(bucket, filename)}
+       }).localized_object_annotations
+       print('Number of objects found: {}'.format(len(objects)))
+       for object_ in objects:
+           print('\n{} (confidence: {})'.format(object_.name, object_.score))
+   except:
+       print("Error")
+
+4. Logs can be viewed using the view logs tab in the Stackdriver.
+   It has all the names of the objects that are detected when an image is uploaded to a GCS bucket.
+
+
+
+   

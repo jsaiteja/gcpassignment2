@@ -1,0 +1,55 @@
+
+ Configuring stack driver monitoring on aws ec2 instance
+
+1. Create a new GCP project
+
+2. go to Stack driver monitoring and create a new workspace
+
+3. Add the GCP project to the newly created workspace and 
+   also click on add AWS account.
+
+4. Record the External ID and Account ID as it is required to create AWS role.
+
+5. Create a role with Read only access and copy its arn and paste in the workspace.
+   Now aws account is also added to the workspace.
+
+6. after successful addition of AWS account, monitoring gives the message that 
+   the aws account is linked to aws connector(aws-23...)
+
+7. Create a Service account to authorize the stack driver and in the roles 
+   add Monitoring metric writer and Log writer.Also generate the key and save it.
+
+8. To add a service account, do the following:
+
+    a. copy the Stackdriver private-key credentials file to  AWS EC2 instance and save it 
+        in a file named temp.json. In the scp command, specify the path to key.pem, your AWS SSH key pair file, and provide your AWS credentials:
+       CREDS="Downloads/Saiteja-stackdriver-5567884.json"
+       KEY="Downloads/instancekey.pem"
+       scp -i "$KEY" "$CREDS" ec2-user@34.12.45.32:temp.json
+
+
+    b. On your EC2 instance, move the credentials to /etc/google/auth/application_default_credentials.json:
+
+       GOOGLE_APPLICATION_CREDENTIALS="/etc/google/auth/application_default_credentials.json"
+       sudo mkdir -p $(dirname "$GOOGLE_APPLICATION_CREDENTIALS")
+       sudo mv "$HOME/temp.json" "$GOOGLE_APPLICATION_CREDENTIALS" 
+
+9. Install Stackdriver monitoring and logging agents using the following commands
+
+   curl -sSO https://dl.google.com/cloudagents/install-monitoring-agent.sh
+   sudo bash install-monitoring-agent.sh
+
+   curl -sSO https://dl.google.com/cloudagents/install-logging-agent.sh
+   sudo bash install-logging-agent.sh --structured
+
+10. Using Stack driver services with AWS, Create an up-time check.
+
+11. Create an alerting policy by adding the notification channel.
+
+12. Go to Logging and to view the logs, select the GCP project and AWS link
+
+
+
+
+
+

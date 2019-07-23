@@ -1,0 +1,33 @@
+
+1. Create a gcp VM instance using the console.
+
+2. Specify the name,zone as us-east1
+
+3. While creating in the firewalls enable the http and https traffic.
+
+4. Also write the start up script at its place while creating so that whenever an instance is stopped and started,
+   the start up script works and apache will be installed.
+   My start up displays a name whenver it is accessed. It is as follows:
+
+   #! /bin/bash
+    sudo su
+    apt-get install w3m w3m-img
+    apt-get update
+    apt-get install -y apache2
+    echo "<h1>Hello Saiteja</h1>" > /var/www/html/index.html
+
+5. After creation of the instance go to vpc-> firewall rule.
+   Add the external ip of this instance to the source ip range in the firewall rules
+   so that it can be accessed in the browser by the link 
+   http://[External_ip]
+
+6. By opening it through http or https link the name will be displayed.
+
+7. In order to stop and restart the vm instance using the cli use the following commands
+
+   gcloud compute instances stop gcp-instance1
+   gcloud compute instances start gcp-instance1
+
+8. After restarting also when we access it using http link the message will be displayed since a start up script is written.
+
+
